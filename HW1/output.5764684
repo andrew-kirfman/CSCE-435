@@ -1,0 +1,121 @@
+Lmod has detected the following error:
+
+	!!!!! You must specify a version for intel  !!!!!
+
+	For details on available toolchain versions, see:
+
+	https://hprc.tamu.edu/wiki/index.php/SW:Toolchains
+
+	To see available versions, run "module spider intel"
+
+
+While processing the following module(s):
+    Module fullname  Module Filename
+    ---------------  ---------------
+    intel/99999999   /software/tamusc/modulefiles/intel/99999999.lua
+
+Trials = 100000000, Threads =    1, pi =   3.1416149600, error = 7.10e-06, time (sec) =   1.5182
+Trials = 100000000, Threads =    2, pi =   3.1417022800, error = 3.49e-05, time (sec) =   0.7595
+Trials = 100000000, Threads =    4, pi =   3.1415910800, error = 5.01e-07, time (sec) =   0.3798
+Trials = 100000000, Threads =    8, pi =   3.1415947600, error = 6.70e-07, time (sec) =   0.1899
+Trials = 100000000, Threads =   16, pi =   3.1415291200, error = 2.02e-05, time (sec) =   0.0951
+Trials = 100000000, Threads =   32, pi =   3.1415901200, error = 8.06e-07, time (sec) =   0.0862
+Trials = 100000000, Threads =   64, pi =   3.1413512400, error = 7.68e-05, time (sec) =   0.0803
+Trials = 100000000, Threads =  128, pi =   3.1429299200, error = 4.26e-04, time (sec) =   0.0793
+Trials = 100000000, Threads =  256, pi =   3.1412995200, error = 9.33e-05, time (sec) =   0.0785
+Trials = 100000000, Threads =  512, pi =   3.1468450800, error = 1.67e-03, time (sec) =   0.0828
+Trials = 100000000, Threads = 1024, pi =   3.1514026000, error = 3.12e-03, time (sec) =   0.0905
+Trials = 1000000000, Threads =    1, pi =   3.1416152040, error = 7.18e-06, time (sec) =  15.1763
+Trials = 1000000000, Threads =    2, pi =   3.1416093400, error = 5.31e-06, time (sec) =   7.5929
+Trials = 1000000000, Threads =    4, pi =   3.1416412200, error = 1.55e-05, time (sec) =   3.7970
+Trials = 1000000000, Threads =    8, pi =   3.1416119880, error = 6.15e-06, time (sec) =   1.8988
+Trials = 1000000000, Threads =   16, pi =   3.1417092000, error = 3.71e-05, time (sec) =   0.9501
+Trials = 1000000000, Threads =   32, pi =   3.1416465000, error = 1.71e-05, time (sec) =   0.8119
+Trials = 1000000000, Threads =   64, pi =   3.1416950600, error = 3.26e-05, time (sec) =   0.7884
+Trials = 1000000000, Threads =  128, pi =   3.1410163200, error = 1.83e-04, time (sec) =   0.7677
+Trials = 1000000000, Threads =  256, pi =   3.1414861120, error = 3.39e-05, time (sec) =   0.7637
+Trials = 1000000000, Threads =  512, pi =   3.1411313560, error = 1.47e-04, time (sec) =   0.7657
+Trials = 1000000000, Threads = 1024, pi =   3.1416669800, error = 2.37e-05, time (sec) =   0.7670
+Trials = 1000, Threads =   20, pi =   3.0800000000, error = 1.96e-02, time (sec) =   0.0005
+Trials = 10000, Threads =   20, pi =   3.0840000000, error = 1.83e-02, time (sec) =   0.0005
+Trials = 100000, Threads =   20, pi =   3.1676000000, error = 8.28e-03, time (sec) =   0.0005
+Trials = 1000000, Threads =   20, pi =   3.1466000000, error = 1.59e-03, time (sec) =   0.0011
+Trials = 10000000, Threads =   20, pi =   3.1432600000, error = 5.31e-04, time (sec) =   0.0079
+Trials = 100000000, Threads =   20, pi =   3.1411620000, error = 1.37e-04, time (sec) =   0.0763
+Trials = 1000000000, Threads =   20, pi =   3.1417024400, error = 3.49e-05, time (sec) =   0.7607
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@nxt1541>
+Subject: Job 5764684: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login1> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*nxt1541>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/CSCE-435/HW1> was used as the working directory.
+Started at Tue May 30 23:21:52 2017
+Results reported on Tue May 30 23:22:35 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -n 20               # number of cores
+#BSUB -o output.%J        # file name for the job's standard output
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module load intel         # load Intel software stack 
+#
+./compute_pi.exe 100000000 1
+./compute_pi.exe 100000000 2
+./compute_pi.exe 100000000 4
+./compute_pi.exe 100000000 8
+./compute_pi.exe 100000000 16
+./compute_pi.exe 100000000 32
+./compute_pi.exe 100000000 64
+./compute_pi.exe 100000000 128
+./compute_pi.exe 100000000 256
+./compute_pi.exe 100000000 512
+./compute_pi.exe 100000000 1024
+
+./compute_pi.exe 1000000000 1
+./compute_pi.exe 1000000000 2
+./compute_pi.exe 1000000000 4
+./compute_pi.exe 1000000000 8
+./compute_pi.exe 1000000000 16
+./compute_pi.exe 1000000000 32
+./compute_pi.exe 1000000000 64
+./compute_pi.exe 1000000000 128
+./compute_pi.exe 1000000000 256
+./compute_pi.exe 1000000000 512
+./compute_pi.exe 1000000000 1024
+
+./compute_pi.exe 1000 20
+./compute_pi.exe 10000 20
+./compute_pi.exe 100000 20
+./compute_pi.exe 1000000 20
+./compute_pi.exe 10000000 20
+./compute_pi.exe 100000000 20
+./compute_pi.exe 1000000000 20
+##
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   202.56 sec.
+    Max Memory :                                 22 MB
+    Average Memory :                             8.33 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               51178.00 MB
+    Max Processes :                              4
+    Max Threads :                                21
+
+The output (if any) is above this job summary.
+

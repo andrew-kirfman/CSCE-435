@@ -1,0 +1,43 @@
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -n 20               # number of cores
+#BSUB -o output.%J        # file name for the job's standard output
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module load intel         # load Intel software stack 
+#
+./compute_pi.exe 100000000 1
+./compute_pi.exe 100000000 2
+./compute_pi.exe 100000000 4
+./compute_pi.exe 100000000 8
+./compute_pi.exe 100000000 16
+./compute_pi.exe 100000000 32
+./compute_pi.exe 100000000 64
+./compute_pi.exe 100000000 128
+./compute_pi.exe 100000000 256
+./compute_pi.exe 100000000 512
+./compute_pi.exe 100000000 1024
+
+./compute_pi.exe 1000000000 1
+./compute_pi.exe 1000000000 2
+./compute_pi.exe 1000000000 4
+./compute_pi.exe 1000000000 8
+./compute_pi.exe 1000000000 16
+./compute_pi.exe 1000000000 32
+./compute_pi.exe 1000000000 64
+./compute_pi.exe 1000000000 128
+./compute_pi.exe 1000000000 256
+./compute_pi.exe 1000000000 512
+./compute_pi.exe 1000000000 1024
+
+./compute_pi.exe 1000 20
+./compute_pi.exe 10000 20
+./compute_pi.exe 100000 20
+./compute_pi.exe 1000000 20
+./compute_pi.exe 10000000 20
+./compute_pi.exe 100000000 20
+./compute_pi.exe 1000000000 20
+##
+

@@ -48,7 +48,7 @@ void *find_minimum (void *s) {
 
     // Thread computes minimum of list[my_start ... my_end]
     int my_minimum = list[my_start]; 
-    for (j = my_start; j <= my_end; j++) {
+    for (j = my_start + 1; j <= my_end; j++) {
 	if (my_minimum > list[j]) my_minimum = list[j]; 
     }
 

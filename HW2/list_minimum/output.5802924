@@ -1,0 +1,73 @@
+Threads = 1, minimum = 19, time (sec) =   0.0975
+Threads = 2, minimum = 0, time (sec) =   0.0504
+Threads = 4, minimum = 4, time (sec) =   0.0300
+Threads = 8, minimum = 4, time (sec) =   0.0241
+Threads = 16, minimum = 32, time (sec) =   0.0243
+Threads = 32, minimum = 19, time (sec) =   0.0240
+Threads = 64, minimum = 9, time (sec) =   0.0239
+Threads = 128, minimum = 0, time (sec) =   0.0248
+Threads = 256, minimum = 45, time (sec) =   0.0253
+Threads = 512, minimum = 6, time (sec) =   0.0262
+Threads = 1024, minimum = 0, time (sec) =   0.0306
+Threads = 2048, minimum = 3, time (sec) =   0.0505
+Threads = 4096, minimum = 8, time (sec) =   0.0991
+Threads = 8192, minimum = 4, time (sec) =   0.1912
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@nxt1904>
+Subject: Job 5802924: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login2> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*nxt1904>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/git/CSCE-435/HW2/list_minimum> was used as the working directory.
+Started at Sun Jun  4 14:24:42 2017
+Results reported on Sun Jun  4 14:25:03 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -n 20               # number of cores
+#BSUB -o output.%J        # file name for the job's standard output
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module load intel/2017A         # load Intel software stack 
+
+./list_minimum.exe 200000000    1
+./list_minimum.exe 200000000    2
+./list_minimum.exe 200000000    4
+./list_minimum.exe 200000000    8
+./list_minimum.exe 200000000   16
+./list_minimum.exe 200000000   32
+./list_minimum.exe 200000000   64
+./list_minimum.exe 200000000  128
+./list_minimum.exe 200000000  256
+./list_minimum.exe 200000000  512
+./list_minimum.exe 200000000 1024
+./list_minimum.exe 200000000 2048
+./list_minimum.exe 200000000 4096
+./list_minimum.exe 200000000 8192
+
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   19.58 sec.
+    Max Memory :                                 842 MB
+    Average Memory :                             420.67 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50358.00 MB
+    Max Processes :                              4
+    Max Threads :                                5
+
+The output (if any) is above this job summary.
+

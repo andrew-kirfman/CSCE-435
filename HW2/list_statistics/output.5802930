@@ -1,0 +1,73 @@
+Threads = 1, mean = 1073759303.299295, std_dev = 619924375.227008 time (sec) =   0.2404
+Threads = 2, mean = 1073744689.825480, std_dev = 619895571.283857 time (sec) =   0.1237
+Threads = 4, mean = 1073754235.466501, std_dev = 619901494.228195 time (sec) =   0.0645
+Threads = 8, mean = 1073791129.311778, std_dev = 619920013.784690 time (sec) =   0.0420
+Threads = 16, mean = 1073744464.568312, std_dev = 619927546.246428 time (sec) =   0.0462
+Threads = 32, mean = 1073775291.848489, std_dev = 619947066.231535 time (sec) =   0.0412
+Threads = 64, mean = 1073793137.513808, std_dev = 619907455.844518 time (sec) =   0.0401
+Threads = 128, mean = 1073734618.660604, std_dev = 619942525.225879 time (sec) =   0.0412
+Threads = 256, mean = 1073812722.717087, std_dev = 619917996.856817 time (sec) =   0.0419
+Threads = 512, mean = 1073659993.756246, std_dev = 619891137.013909 time (sec) =   0.0441
+Threads = 1024, mean = 1073757500.327489, std_dev = 619930258.662972 time (sec) =   0.0503
+Threads = 2048, mean = 1073757264.180492, std_dev = 619918803.494542 time (sec) =   0.0742
+Threads = 4096, mean = 1073747471.807467, std_dev = 619898449.106108 time (sec) =   0.1321
+Threads = 8192, mean = 1073696769.794741, std_dev = 619938432.962328 time (sec) =   0.2571
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@nxt1572>
+Subject: Job 5802930: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login2> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*nxt1572>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/git/CSCE-435/HW2/list_statistics> was used as the working directory.
+Started at Sun Jun  4 14:31:02 2017
+Results reported on Sun Jun  4 14:31:24 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -n 20               # number of cores
+#BSUB -o output.%J        # file name for the job's standard output
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module load intel/2017A         # load Intel software stack 
+
+./list_statistics.exe 200000000    1
+./list_statistics.exe 200000000    2
+./list_statistics.exe 200000000    4
+./list_statistics.exe 200000000    8
+./list_statistics.exe 200000000   16
+./list_statistics.exe 200000000   32
+./list_statistics.exe 200000000   64
+./list_statistics.exe 200000000  128
+./list_statistics.exe 200000000  256
+./list_statistics.exe 200000000  512
+./list_statistics.exe 200000000 1024
+./list_statistics.exe 200000000 2048
+./list_statistics.exe 200000000 4096
+./list_statistics.exe 200000000 8192
+
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   25.59 sec.
+    Max Memory :                                 874 MB
+    Average Memory :                             178.67 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50326.00 MB
+    Max Processes :                              4
+    Max Threads :                                5
+
+The output (if any) is above this job summary.
+

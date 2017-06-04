@@ -160,8 +160,9 @@ int main(int argc, char *argv[]) {
 
     struct timespec start, stop;
     double total_time, time_res;
+    double true_mean = 0.00;
+    double true_std_dev = 0.00;
     int i, j; 
-    int true_minimum;
 
     if (argc != 3) {
 	printf("Need two integers as input \n"); 
@@ -187,32 +188,24 @@ int main(int argc, char *argv[]) {
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
-    // Initialize list, compute minimum to verify result
-    srand48(time(0)); 	// seed the random number generator
+    /* --------------------------------------------------------------------- */
+    /* Initialize List and Compute True Values                               */
+    /* --------------------------------------------------------------------- */
+
+    srand48(time(0)); 	
     list[0] = lrand48(); 
-    true_minimum = list[0];
-    for (j = 1; j < list_size; j++) {
-	list[j] = lrand48(); 
-	if (true_minimum > list[j]) {
-	    true_minimum = list[j];
-	}
-    }
-
-    /* --------------------------------------------------------------------- */
-    /* Compute True Values for Comparison with Threaded Ones                 */
-    /* --------------------------------------------------------------------- */
-
-    // Calculate the true mean using just one thread
-    double true_mean = 0.00;
-    for(j = 0; j<list_size; j++)
+    true_mean = list[0];    
+    for (j = 1; j < list_size; j++) 
     {
+        list[j] = lrand48();
+
         true_mean = true_mean + list[j];
     }
 
+    // Calculate the true mean
     true_mean = true_mean/(list_size * 1.00);
 
     // Calculate the true standard deviation 
-    double true_std_dev = 0.00;
     for(j = 0; j<list_size; j++)
     {
         true_std_dev = true_std_dev + (list[j] - true_mean) * (list[j] - true_mean) * 1.00;

@@ -1,0 +1,24 @@
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -n 20               # number of cores
+#BSUB -o output.%J        # file name for the job's standard output
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module load intel/2017A         # load Intel software stack 
+
+./barrier.exe 2
+./barrier.exe 4
+./barrier.exe 8
+./barrier.exe 16
+./barrier.exe 32
+./barrier.exe 64
+./barrier.exe 128
+./barrier.exe 256
+./barrier.exe 512
+./barrier.exe 1024
+./barrier.exe 2048
+./barrier.exe 4096
+./barrier.exe 8192
+./barrier.exe 16384

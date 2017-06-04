@@ -1,0 +1,72 @@
+Threads = 2, barrier time (sec) =   2.0004	 timer resolution = 1.0000e-09 sec
+Threads = 4, barrier time (sec) =   2.0003	 timer resolution = 1.0000e-09 sec
+Threads = 8, barrier time (sec) =   2.0003	 timer resolution = 1.0000e-09 sec
+Threads = 16, barrier time (sec) =   2.0006	 timer resolution = 1.0000e-09 sec
+Threads = 32, barrier time (sec) =   2.0008	 timer resolution = 1.0000e-09 sec
+Threads = 64, barrier time (sec) =   2.0015	 timer resolution = 1.0000e-09 sec
+Threads = 128, barrier time (sec) =   2.0034	 timer resolution = 1.0000e-09 sec
+Threads = 256, barrier time (sec) =   2.0062	 timer resolution = 1.0000e-09 sec
+Threads = 512, barrier time (sec) =   2.0112	 timer resolution = 1.0000e-09 sec
+Threads = 1024, barrier time (sec) =   2.0235	 timer resolution = 1.0000e-09 sec
+Threads = 2048, barrier time (sec) =   2.0480	 timer resolution = 1.0000e-09 sec
+Threads = 4096, barrier time (sec) =   2.1002	 timer resolution = 1.0000e-09 sec
+Threads = 8192, barrier time (sec) =   2.2085	 timer resolution = 1.0000e-09 sec
+Threads = 16384, barrier time (sec) =   2.4165	 timer resolution = 1.0000e-09 sec
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@nxt2029>
+Subject: Job 5801428: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login8> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*nxt2029>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/git/CSCE-435/HW2/barrier> was used as the working directory.
+Started at Sat Jun  3 17:36:55 2017
+Results reported on Sat Jun  3 17:37:27 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -n 20               # number of cores
+#BSUB -o output.%J        # file name for the job's standard output
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module load intel/2017A         # load Intel software stack 
+
+./barrier.exe 2
+./barrier.exe 4
+./barrier.exe 8
+./barrier.exe 16
+./barrier.exe 32
+./barrier.exe 64
+./barrier.exe 128
+./barrier.exe 256
+./barrier.exe 512
+./barrier.exe 1024
+./barrier.exe 2048
+./barrier.exe 4096
+./barrier.exe 8192
+./barrier.exe 16384
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3.57 sec.
+    Max Memory :                                 210 MB
+    Average Memory :                             52.20 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50990.00 MB
+    Max Swap :                                   1 MB
+    Max Processes :                              4
+    Max Threads :                                16389
+
+The output (if any) is above this job summary.
+

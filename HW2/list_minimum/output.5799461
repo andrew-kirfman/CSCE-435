@@ -1,0 +1,49 @@
+Threads = 1, minimum = 24, time (sec) =   0.0974
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@nxt1666>
+Subject: Job 5799461: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login5> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*nxt1666>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/git/CSCE-435/HW2> was used as the working directory.
+Started at Sat Jun  3 15:28:01 2017
+Results reported on Sat Jun  3 15:28:05 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -n 20               # number of cores
+#BSUB -o output.%J        # file name for the job's standard output
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module load intel/2017A         # load Intel software stack 
+
+./list_minimum.exe 200000000 1
+
+
+
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2.55 sec.
+    Max Memory :                                 773 MB
+    Average Memory :                             5.00 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50427.00 MB
+    Max Processes :                              3
+    Max Threads :                                3
+
+The output (if any) is above this job summary.
+

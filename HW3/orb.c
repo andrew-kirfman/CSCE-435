@@ -134,25 +134,11 @@ void *find_orb(void *arg)
                 // Third distance is the distance between the two poitns
                 distance1 = sqrt( pow(point_2_x - point_1_x, 2.0) + pow(point_2_y - point_1_y, 2.0) );
 
-
-                printf("Distance1: %f\n", distance1);
-                printf("Distance2: %f\n", distance2);
-                printf("Distance3: %f\n", distance3);
-                printf("P1_x:      %f\n", point_1_x);
-                printf("P1_y:      %f\n", point_1_y);
-                printf("P2_x:      %f\n", point_2_x);
-                printf("P2_y:      %f\n", point_2_y);
-
-
+                // Funky trig equations sourced here: https://stackoverflow.com/questions/24970605/
+                // finding-third-points-of-triangle-using-other-two-points-with-known-distances
                 double cos_phi = (pow(distance1, 2.0) + pow(distance2, 2.0) - pow(distance3, 2.0)) / (2 * distance1 * distance2);
 
-                printf("Numerator cos phi: %f\n", (pow(distance1, 2.0)));
-
-                printf("Cosine of phi: %f\n", cos_phi);
-
                 double sin_phi = sqrt(1 - pow(cos_phi, 2.0));
-
-                printf("Found two points!\n\n\n");
 
                 double orbx1 = point_1_x + distance2/distance1 * (cos_phi * (point_2_x - point_1_x) - sin_phi * (point_2_y - point_1_y));
                 
@@ -163,13 +149,6 @@ void *find_orb(void *arg)
 
                 double final_1 = query_orb(orbx1, orby1);
                 double final_2 = query_orb(orbx2, orby2);
-
-                printf("ORB X COORDINATE 1: %f\n", orbx1);
-                printf("ORB X COORDINATE 2: %f\n", orbx2);
-                printf("ORB Y COORDINATE 1: %f\n", orby1);
-                printf("ORB Y COORDINATE 2: %f\n", orby2);
-                printf("Final distance 1: %f\n", final_1);
-                printf("Final distance 2: %f\n\n", final_2);
                 
                 // The code will terminate now
                 distance = 0.0;               
@@ -207,8 +186,15 @@ void *find_orb(void *arg)
              
                 // THE RIGHT ANSWER IS NOT BEING OUTPUT CORRECTLY!!! FIX THIS!!!
                 // ORBX AND ORBY ARE BEING SET UP ABOVE...
-                orb_x = test_x;
-                orb_y = test_y;
+                
+                // UNCOMMENT THIS TO GET THE RIGHT ANSWER AT THE OUTPUT!!!
+                // REARRANGE THIS LATER ON SO THAT THE RIGHT ANSWER HAPPENS!!!
+
+                //if(current_distance > 1e-6)
+                //{
+                    orb_x = test_x;
+                    orb_y = test_y;
+                //}    
             } 
 
             pthread_mutex_unlock(&range_lock);

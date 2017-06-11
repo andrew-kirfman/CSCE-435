@@ -9,34 +9,34 @@
 module load intel/2017A         # load Intel software stack 
 
 ./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
-./orb.exe 10 100
+./orb.exe 11 100
+./orb.exe 12 100
+./orb.exe 13 100
+./orb.exe 14 100
+./orb.exe 15 100
+./orb.exe 16 100
+./orb.exe 17 100
+./orb.exe 18 100
+./orb.exe 19 100
+./orb.exe 20 100
+./orb.exe 21 100
+./orb.exe 22 100
+./orb.exe 23 100
+./orb.exe 24 100
+./orb.exe 25 100
+./orb.exe 26 100
+./orb.exe 27 100
+./orb.exe 28 100
+./orb.exe 29 100
+./orb.exe 30 100
+./orb.exe 31 100
+./orb.exe 32 100
+./orb.exe 33 100
+./orb.exe 34 100
+./orb.exe 35 100
+./orb.exe 36 100
+./orb.exe 37 100
+./orb.exe 38 100
 
 
 

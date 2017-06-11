@@ -37,6 +37,7 @@ double orb_x, orb_y; 		//Coordinates of orb (to be found)
 double range_x, range_y;
 
 // Thread and synchronization variables
+// Thread count was chosen through experimentation to be optimal
 #define NUM_THREADS 125
 pthread_t pthreads[NUM_THREADS];
 pthread_attr_t attr;
@@ -71,10 +72,6 @@ void *find_orb(void *arg)
     double distance = 0.0;
     unsigned int seed = args->random_seed + args->thread_id;
 
-    double test_x = 0.0;
-    double test_y = 0.0;
-    
-
     for(;;)
     {
         x_pos = (double)rand_r(&seed)/(double)(RAND_MAX/range_x);
@@ -82,23 +79,23 @@ void *find_orb(void *arg)
 
         if(rand_r(&seed) % 2 == 0 && orb_x - x_pos >= 0)
         {
-            test_x = orb_x - x_pos;
+            x_pos = orb_x - x_pos;
         }
         else
         {
-            test_x = orb_x + x_pos;
+            x_pos = orb_x + x_pos;
         }
 
         if(rand_r(&seed) % 2 == 0 && orb_y - y_pos >= 0)
         {
-            test_y = orb_y - y_pos;
+            y_pos = orb_y - y_pos;
         }
         else
         {
-            test_y = orb_y + y_pos;
+            y_pos = orb_y + y_pos;
         }
 
-        distance = query_orb(test_x, test_y);
+        distance = query_orb(x_pos, y_pos);
 
         if(distance != -1)
         {
@@ -106,8 +103,8 @@ void *find_orb(void *arg)
 
             if(point_1_x == 0.00 && point_1_y == 0.00)
             {
-                point_1_x = test_x;
-                point_1_y = test_y;
+                point_1_x = x_pos;
+                point_1_y = y_pos;
                 distance2 = distance;
 
                 // If we've found a point that is closer to the orb than any other, 
@@ -120,14 +117,14 @@ void *find_orb(void *arg)
                     range_y = distance;
 
              
-                    orb_x = test_x;
-                    orb_y = test_y;
+                    orb_x = x_pos;
+                    orb_y = y_pos;
                 }
             }
             else if(point_2_x == 0.00 && point_2_y == 0.00)
             {
-                point_2_x = test_x;
-                point_2_y = test_y;
+                point_2_x = x_pos;
+                point_2_y = y_pos;
                 distance3 = distance;
 
                 // Third distance is the distance between the two poitns
@@ -223,22 +220,16 @@ int main(int argc, char *argv[]) {
     annulus_width = get_annulus_width();	 	// Do not remove
     orb_radius = get_orb_radius();	 		// Do not remove
 
-    printf("\n"); 
-    printf("domain_size = %8.2f, annulus_width = %8.2f, orb_radius = %12.6f\n", domain_size, annulus_width, orb_radius); 
-    printf("\n"); 
-    printf("-----------------------------------------------------------------------------\n"); 
-    printf("* IMPORTANT: orb_radius set to %f to ensure sample serial \n", orb_radius); 
-    printf("* code in orb.c finishes in reasonable time. Make sure your \n"); 
-    printf("* code works well for _orb_radius = 1.0e-6 before submitting \n"); 
-    printf("* your assignement. _orb_radius can be set in orb.h.\n"); 
-    printf("-----------------------------------------------------------------------------\n"); 
-    printf("\n"); 
 
-    clock_gettime(CLOCK_REALTIME, &start); 	// Do not remove
-
+    // Initialize all of my stuff here along with the global variables
+    int i = 0;
+    int status = 0;
+    int random_seed;
+    struct thread_args args[NUM_THREADS];
+    
+    // Initialize pthreads variables
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-
     pthread_mutex_init(&range_lock, NULL);
 
     // Initialize the two range variables 
@@ -259,16 +250,25 @@ int main(int argc, char *argv[]) {
 
     current_distance = 2 * domain_size * domain_size;
 
+
+    printf("\n"); 
+    printf("domain_size = %8.2f, annulus_width = %8.2f, orb_radius = %12.6f\n", domain_size, annulus_width, orb_radius); 
+    printf("\n"); 
+    printf("-----------------------------------------------------------------------------\n"); 
+    printf("* IMPORTANT: orb_radius set to %f to ensure sample serial \n", orb_radius); 
+    printf("* code in orb.c finishes in reasonable time. Make sure your \n"); 
+    printf("* code works well for _orb_radius = 1.0e-6 before submitting \n"); 
+    printf("* your assignement. _orb_radius can be set in orb.h.\n"); 
+    printf("-----------------------------------------------------------------------------\n"); 
+    printf("\n"); 
     printf("[DEBUG]: Range: %f, %f.  Distance: %f", range_x, range_y, current_distance);
-    
+
+    clock_gettime(CLOCK_REALTIME, &start); 	// Do not remove
 
     // Create all of the threads
-    int i, status;
-
     // Generate a random seed so that I can use it for other random seeds
     srand48(time(NULL));
-    int random_seed = lrand48();
-    struct thread_args args[NUM_THREADS];
+    random_seed = lrand48();
 
     for(i = 0; i<NUM_THREADS; i++)
     {
@@ -276,8 +276,6 @@ int main(int argc, char *argv[]) {
         args[i].thread_id = i;
 
         status = pthread_create(&pthreads[i], &attr, find_orb, (void*) &args[i]);
-
-        
 
         if(status != 0)
         {

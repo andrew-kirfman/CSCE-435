@@ -21,31 +21,28 @@
 #include "orb.h"		// Do not remove
 
 
-#define NUM_THREADS 20
-pthread_t pthreads[NUM_THREADS];
-pthread_attr_t attr;
-
-pthread_mutex_t range_lock;
-
-
-double current_distance;
-
+/* ------------------------------------------------------------------------- */
+/* Global Variables                                                          */
+/* ------------------------------------------------------------------------- */
 
 struct timespec start, stop; 	// Do not remove
-//clock_t start, stop;
-
 double total_time;		// Do not remove
-
 double domain_size;		// Do not remove
 double annulus_width;		// Do not remove
 double orb_radius;		// Do not remove
-
 double orb_x, orb_y; 		//Coordinates of orb (to be found)
 
 // Variables to contain the range of acceptable random values to generate over
 // This will narrow as the guesses of my program grow closer to the orb.  
 double range_x, range_y;
 
+// Thread and synchronization variables
+#define NUM_THREADS 100
+pthread_t pthreads[NUM_THREADS];
+pthread_attr_t attr;
+pthread_mutex_t range_lock;
+
+// Global data variables
 double point_1_x;
 double point_1_y;
 double point_2_x;
@@ -53,15 +50,7 @@ double point_2_y;
 double distance1;
 double distance2;
 double distance3;
-
-// -------------------------------------------------------------------------
-// Data structures and multithreaded code to find orb
-// ...
-// ...
-// ...
-// ...
-// ...
-// ...
+double current_distance;
 
 struct thread_args
 {
@@ -69,6 +58,9 @@ struct thread_args
     short int thread_id;
 };
 
+/* ------------------------------------------------------------------------- */
+/* Thread Function                                                           */
+/* ------------------------------------------------------------------------- */
 
 void *find_orb(void *arg)
 {
@@ -124,6 +116,23 @@ void *find_orb(void *arg)
                 point_1_x = test_x;
                 point_1_y = test_y;
                 distance2 = distance;
+
+                // If we've found a point that is closer to the orb than any other, 
+                // start generating points closer to it.  
+                if(distance < current_distance)
+                {   
+                    printf("Distance: %f, Current Distance: %f\n", distance, current_distance);
+                    printf("Orb Position: (%f, %f)\n\n", orb_x + x_sign * x_pos, orb_y + y_sign * y_pos);
+
+                    current_distance = distance;
+                
+                    range_x = distance;
+                    range_y = distance;
+
+             
+                    orb_x = test_x;
+                    orb_y = test_y;
+                }
             }
             else if(point_2_x == 0.00 && point_2_y == 0.00)
             {
@@ -137,65 +146,60 @@ void *find_orb(void *arg)
                 // Funky trig equations sourced here: https://stackoverflow.com/questions/24970605/
                 // finding-third-points-of-triangle-using-other-two-points-with-known-distances
                 double cos_phi = (pow(distance1, 2.0) + pow(distance2, 2.0) - pow(distance3, 2.0)) / (2 * distance1 * distance2);
-
                 double sin_phi = sqrt(1 - pow(cos_phi, 2.0));
 
+                // There are two possible solutions to this equation depending on the location
+                // of the various data points.  Test each one.  
                 double orbx1 = point_1_x + distance2/distance1 * (cos_phi * (point_2_x - point_1_x) - sin_phi * (point_2_y - point_1_y));
-                
-                double orbx2 = point_1_x + distance2/distance1 * (cos_phi * (point_2_x - point_1_x) + sin_phi * (point_2_y - point_1_y));    
-
                 double orby1 = point_1_y + distance2/distance1 * (sin_phi * (point_2_x - point_1_x) + cos_phi * (point_2_y - point_1_y));
-                double orby2 = point_1_y + distance2/distance1 * (-1 * sin_phi * (point_2_x - point_1_x) + cos_phi * (point_2_y - point_1_y));
-
-                double final_1 = query_orb(orbx1, orby1);
-                double final_2 = query_orb(orbx2, orby2);
                 
-                // The code will terminate now
-                distance = 0.0;               
+                double final_1 = query_orb(orbx1, orby1);
 
                 if(final_1 < 1e-6 && final_1 >= 0.0)
                 {
                     orb_x = orbx1;
-                    orb_y = orby1;
-                    printf("\nYAY ME 1!\n\n");
+                    orb_y = orby1;   
+
+                    current_distance = 0.0;
+
+                    printf("Flag1\n");
                 }
-                
-                if(final_2 < 1e-6 && final_2 >= 0.0)
+                else
                 {
-                    orb_x = orbx2;
-                    orb_y = orby2;
-                    printf("\nYAY ME 2!\n\n");
+                    double orbx2 = point_1_x + distance2/distance1 * (cos_phi * (point_2_x - point_1_x) + sin_phi * (point_2_y - point_1_y));    
+                    double orby2 = point_1_y + distance2/distance1 * (-1 * sin_phi * (point_2_x - point_1_x) + cos_phi * (point_2_y - point_1_y));
+
+                    double final_2 = query_orb(orbx2, orby2); 
+                                    
+                    if(final_2 < 1e-6 && final_2 >= 0.0)
+                    {
+                        orb_x = orbx2;
+                        orb_y = orby2;
+                        
+                        current_distance = 0.0;
+                        
+                        printf("Flag2\n");
+                    }
+                    // If we get here, we need to start over!
+                    else
+                    {
+                        point_1_x = 0.0;
+                        point_1_y = 0.0;
+
+                        point_2_x = 0.0;
+                        point_2_y = 0.0;                 
+
+                        distance1 = 0.0;
+                        distance2 = 0.0;
+                        distance3 = 0.0;
+
+                        range_x = domain_size;
+                        range_y = domain_size;
+                        
+                        current_distance = 2 * domain_size * domain_size;
+                    }   
                 }
-
-                print_orb_location();
             }
-
-
-            // If we've found a point that is closer to the orb than any other, 
-            // start generating points closer to it.  
-            if(distance < current_distance)
-            {
-                printf("Distance: %f, Current Distance: %f\n", distance, current_distance);
-                printf("Orb Position: (%f, %f)\n\n", orb_x + x_sign * x_pos, orb_y + y_sign * y_pos);
-
-                current_distance = distance;
-                
-                range_x = distance;
-                range_y = distance;
-
-             
-                // THE RIGHT ANSWER IS NOT BEING OUTPUT CORRECTLY!!! FIX THIS!!!
-                // ORBX AND ORBY ARE BEING SET UP ABOVE...
-                
-                // UNCOMMENT THIS TO GET THE RIGHT ANSWER AT THE OUTPUT!!!
-                // REARRANGE THIS LATER ON SO THAT THE RIGHT ANSWER HAPPENS!!!
-
-                //if(current_distance > 1e-6)
-                //{
-                    orb_x = test_x;
-                    orb_y = test_y;
-                //}    
-            } 
 
             pthread_mutex_unlock(&range_lock);
         }
@@ -299,39 +303,6 @@ int main(int argc, char *argv[]) {
         pthread_join(pthreads[i], NULL);
     }
 
-
-
-
-    // Multithreaded code to find orb
-    // ...
-    // ...
-    // ... sample serial code shown below ...
-    // ... extremely inefficient, executes in reasonable time 
-    // ... ONLY for large orb radius (set in orb.h)
-    // ... you must set _orb_radius = 1.0e-6 in orb.h to 
-    // ... test your final code
-    
-
-
-    /* 
-    double x1, y1, distance;
-    int count = 0; 
-    orb_x = 0.0; orb_y = 0.0; 
-    for (x1 = 0.0; x1 < domain_size; x1 += orb_radius) { 
-        for (y1 = 0.0; y1 < domain_size; y1 += orb_radius) { 
-	    distance = query_orb(x1, y1); 
-	    if ((distance > 0.0) && (distance < orb_radius)) {
-		orb_x = x1; 
-		orb_y = y1; 
-	    } 
-	}
-    }
-    // ...
-    // ...
-    // ...
-
-    */
-
     // Compute time taken
     clock_gettime(CLOCK_REALTIME, &stop);			// Do not remove
     total_time = (stop.tv_sec-start.tv_sec)			// Do not remove
@@ -343,13 +314,8 @@ int main(int argc, char *argv[]) {
 
     print_orb_location(); 
 
+    // Clean Up!
     pthread_attr_destroy(&attr);
     pthread_mutex_destroy(&range_lock);
-
-    // Other code to wrap up things
-    // ...
-    // ...
-    // ...
-
 }
 

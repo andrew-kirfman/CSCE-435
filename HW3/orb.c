@@ -37,7 +37,7 @@ double orb_x, orb_y; 		//Coordinates of orb (to be found)
 double range_x, range_y;
 
 // Thread and synchronization variables
-#define NUM_THREADS 100
+#define NUM_THREADS 125
 pthread_t pthreads[NUM_THREADS];
 pthread_attr_t attr;
 pthread_mutex_t range_lock;
@@ -70,42 +70,35 @@ void *find_orb(void *arg)
     double y_pos = 0.0;
     double distance = 0.0;
     unsigned int seed = args->random_seed + args->thread_id;
-    short int x_sign = 0;
-    short int y_sign = 0;
-    int status = 0;
 
     double test_x = 0.0;
     double test_y = 0.0;
+    
 
     for(;;)
     {
         x_pos = (double)rand_r(&seed)/(double)(RAND_MAX/range_x);
         y_pos = (double)rand_r(&seed)/(double)(RAND_MAX/range_y);
 
-        // There has to be a much better way of doing this!
         if(rand_r(&seed) % 2 == 0 && orb_x - x_pos >= 0)
         {
-            x_sign = -1;   
+            test_x = orb_x - x_pos;
         }
         else
         {
-            x_sign = 1;
+            test_x = orb_x + x_pos;
         }
 
         if(rand_r(&seed) % 2 == 0 && orb_y - y_pos >= 0)
         {
-            y_sign = -1;
+            test_y = orb_y - y_pos;
         }
         else
         {
-            y_sign = 1;
+            test_y = orb_y + y_pos;
         }
 
-        test_x = orb_x + x_sign * x_pos;
-        test_y = orb_y + y_sign * y_pos;
-
         distance = query_orb(test_x, test_y);
-
 
         if(distance != -1)
         {
@@ -121,9 +114,6 @@ void *find_orb(void *arg)
                 // start generating points closer to it.  
                 if(distance < current_distance)
                 {   
-                    printf("Distance: %f, Current Distance: %f\n", distance, current_distance);
-                    printf("Orb Position: (%f, %f)\n\n", orb_x + x_sign * x_pos, orb_y + y_sign * y_pos);
-
                     current_distance = distance;
                 
                     range_x = distance;
@@ -204,13 +194,11 @@ void *find_orb(void *arg)
             pthread_mutex_unlock(&range_lock);
         }
 
-
         if(current_distance < 0.000001)
         {
             pthread_exit(NULL);
         }
     }
-
 
     pthread_exit(NULL);
 }

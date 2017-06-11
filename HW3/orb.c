@@ -21,7 +21,7 @@
 #include "orb.h"		// Do not remove
 
 
-#define NUM_THREADS 50
+#define NUM_THREADS 20
 pthread_t pthreads[NUM_THREADS];
 pthread_attr_t attr;
 
@@ -45,6 +45,14 @@ double orb_x, orb_y; 		//Coordinates of orb (to be found)
 // Variables to contain the range of acceptable random values to generate over
 // This will narrow as the guesses of my program grow closer to the orb.  
 double range_x, range_y;
+
+double point_1_x;
+double point_1_y;
+double point_2_x;
+double point_2_y;
+double distance1;
+double distance2;
+double distance3;
 
 // -------------------------------------------------------------------------
 // Data structures and multithreaded code to find orb
@@ -104,17 +112,85 @@ void *find_orb(void *arg)
         test_x = orb_x + x_sign * x_pos;
         test_y = orb_y + y_sign * y_pos;
 
-        //pthread_mutex_lock(&range_lock);
-
         distance = query_orb(test_x, test_y);
 
-        //pthread_mutex_unlock(&range_lock);
- 
 
         pthread_mutex_lock(&range_lock);
 
         if(distance != -1)
         {
+            if(point_1_x == 0.00 && point_1_y == 0.00)
+            {
+                point_1_x = test_x;
+                point_1_y = test_y;
+                distance2 = distance;
+            }
+            else if(point_2_x == 0.00 && point_2_y == 0.00)
+            {
+                point_2_x = test_x;
+                point_2_y = test_y;
+                distance3 = distance;
+
+                // Third distance is the distance between the two poitns
+                distance1 = sqrt( pow(point_2_x - point_1_x, 2.0) + pow(point_2_y - point_1_y, 2.0) );
+
+
+                printf("Distance1: %f\n", distance1);
+                printf("Distance2: %f\n", distance2);
+                printf("Distance3: %f\n", distance3);
+                printf("P1_x:      %f\n", point_1_x);
+                printf("P1_y:      %f\n", point_1_y);
+                printf("P2_x:      %f\n", point_2_x);
+                printf("P2_y:      %f\n", point_2_y);
+
+
+                double cos_phi = (pow(distance1, 2.0) + pow(distance2, 2.0) - pow(distance3, 2.0)) / (2 * distance1 * distance2);
+
+                printf("Numerator cos phi: %f\n", (pow(distance1, 2.0)));
+
+                printf("Cosine of phi: %f\n", cos_phi);
+
+                double sin_phi = sqrt(1 - pow(cos_phi, 2.0));
+
+                printf("Found two points!\n\n\n");
+
+                double orbx1 = point_1_x + distance2/distance1 * (cos_phi * (point_2_x - point_1_x) - sin_phi * (point_2_y - point_1_y));
+                
+                double orbx2 = point_1_x + distance2/distance1 * (cos_phi * (point_2_x - point_1_x) + sin_phi * (point_2_y - point_1_y));    
+
+                double orby1 = point_1_y + distance2/distance1 * (sin_phi * (point_2_x - point_1_x) + cos_phi * (point_2_y - point_1_y));
+                double orby2 = point_1_y + distance2/distance1 * (-1 * sin_phi * (point_2_x - point_1_x) + cos_phi * (point_2_y - point_1_y));
+
+                double final_1 = query_orb(orbx1, orby1);
+                double final_2 = query_orb(orbx2, orby2);
+
+                printf("ORB X COORDINATE 1: %f\n", orbx1);
+                printf("ORB X COORDINATE 2: %f\n", orbx2);
+                printf("ORB Y COORDINATE 1: %f\n", orby1);
+                printf("ORB Y COORDINATE 2: %f\n", orby2);
+                printf("Final distance 1: %f\n", final_1);
+                printf("Final distance 2: %f\n\n", final_2);
+                
+                // The code will terminate now
+                distance = 0.0;               
+
+                if(final_1 < 1e-6 && final_1 >= 0.0)
+                {
+                    orb_x = orbx1;
+                    orb_y = orby1;
+                    printf("\nYAY ME 1!\n\n");
+                }
+                
+                if(final_2 < 1e-6 && final_2 >= 0.0)
+                {
+                    orb_x = orbx2;
+                    orb_y = orby2;
+                    printf("\nYAY ME 2!\n\n");
+                }
+
+                print_orb_location();
+            }
+
 
             // If we've found a point that is closer to the orb than any other, 
             // start generating points closer to it.  
@@ -128,6 +204,9 @@ void *find_orb(void *arg)
                 range_x = distance;
                 range_y = distance;
 
+             
+                // THE RIGHT ANSWER IS NOT BEING OUTPUT CORRECTLY!!! FIX THIS!!!
+                // ORBX AND ORBY ARE BEING SET UP ABOVE...
                 orb_x = test_x;
                 orb_y = test_y;
             } 
@@ -190,6 +269,15 @@ int main(int argc, char *argv[]) {
     
     orb_x = 0.0;
     orb_y = 0.0;
+
+    point_1_x = 0.00;
+    point_1_y = 0.00;
+
+    point_2_x = 0.00;
+    point_2_y = 0.00;
+    
+    distance1 = 0.0;
+    distance2 = 0.0;
 
     current_distance = 2 * domain_size * domain_size;
 

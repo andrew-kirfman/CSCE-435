@@ -115,10 +115,10 @@ void *find_orb(void *arg)
         distance = query_orb(test_x, test_y);
 
 
-        pthread_mutex_lock(&range_lock);
-
         if(distance != -1)
         {
+            pthread_mutex_lock(&range_lock);
+
             if(point_1_x == 0.00 && point_1_y == 0.00)
             {
                 point_1_x = test_x;
@@ -211,9 +211,9 @@ void *find_orb(void *arg)
                 orb_y = test_y;
             } 
 
+            pthread_mutex_unlock(&range_lock);
         }
 
-        pthread_mutex_unlock(&range_lock);
 
         if(current_distance < 0.000001)
         {

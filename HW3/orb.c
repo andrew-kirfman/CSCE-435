@@ -113,10 +113,14 @@ void *find_orb(void *arg)
                 {   
                     current_distance = distance;
                 
-                    range_x = distance;
-                    range_y = distance;
+                    // This is a tactic for making my program run faster.  If something goes
+                    // wrong, uncomment the two lines below and delete the two below that. 
+                    //range_x = distance;
+                    //range_y = distance;                    
 
-             
+                    range_x = 1.00;
+                    range_y = 1.00;
+
                     orb_x = x_pos;
                     orb_y = y_pos;
                 }
@@ -193,7 +197,7 @@ void *find_orb(void *arg)
 
         if(current_distance < 0.000001)
         {
-            pthread_exit(NULL);
+             pthread_exit(NULL);
         }
     }
 

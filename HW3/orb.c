@@ -74,8 +74,8 @@ void *find_orb(void *arg)
 
     for(;;)
     {
-        x_pos = (double)rand_r(&seed)/(double)(RAND_MAX/range_x);
-        y_pos = (double)rand_r(&seed)/(double)(RAND_MAX/range_y);
+        x_pos = (double)rand_r(&seed)/(double)(range_x);
+        y_pos = (double)rand_r(&seed)/(double)(range_y);
 
         if(rand_r(&seed) % 2 == 0 && orb_x - x_pos >= 0)
         {
@@ -118,8 +118,10 @@ void *find_orb(void *arg)
                     //range_x = distance;
                     //range_y = distance;                    
 
-                    range_x = 1.00;
-                    range_y = 1.00;
+                    // This is an abstraction of RAND_MAX/1 which will result in the production
+                    // of a random number between 0.0 and 1.0
+                    range_x = RAND_MAX;
+                    range_y = RAND_MAX;
 
                     orb_x = x_pos;
                     orb_y = y_pos;
@@ -184,8 +186,8 @@ void *find_orb(void *arg)
                         distance2 = 0.0;
                         distance3 = 0.0;
 
-                        range_x = domain_size;
-                        range_y = domain_size;
+                        range_x = RAND_MAX/domain_size;
+                        range_y = RAND_MAX/domain_size;
                         
                         current_distance = 2 * domain_size * domain_size;
                     }   
@@ -237,8 +239,8 @@ int main(int argc, char *argv[]) {
     pthread_mutex_init(&range_lock, NULL);
 
     // Initialize the two range variables 
-    range_x = domain_size;
-    range_y = domain_size;
+    range_x = RAND_MAX/domain_size;
+    range_y = RAND_MAX/domain_size;
     
     orb_x = 0.0;
     orb_y = 0.0;

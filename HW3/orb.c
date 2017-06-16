@@ -129,12 +129,13 @@ void *find_orb(void *arg)
                 distance3 = distance;
 
                 // Third distance is the distance between the two poitns
-                distance1 = sqrt( pow(point_2_x - point_1_x, 2.0) + pow(point_2_y - point_1_y, 2.0) );
+                distance1 = sqrt((point_2_x - point_1_x) * (point_2_x - point_1_x) + (point_2_y - point_1_y) * (point_2_y - point_1_y));
 
                 // Funky trig equations sourced here: https://stackoverflow.com/questions/24970605/
                 // finding-third-points-of-triangle-using-other-two-points-with-known-distances
-                double cos_phi = (pow(distance1, 2.0) + pow(distance2, 2.0) - pow(distance3, 2.0)) / (2 * distance1 * distance2);
-                double sin_phi = sqrt(1 - pow(cos_phi, 2.0));
+                double cos_phi = (distance1 * distance1 + distance2 * distance2 - distance3 * distance3) 
+                    / (2 * distance1 * distance2);
+                double sin_phi = sqrt(1 - cos_phi * cos_phi);
 
                 // There are two possible solutions to this equation depending on the location
                 // of the various data points.  Test each one.  

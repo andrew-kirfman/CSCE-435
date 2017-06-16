@@ -37,7 +37,7 @@ double orb_x, orb_y; 		//Coordinates of orb (to be found)
 double range_x, range_y;
 
 // Thread and synchronization variables
-// Thread count was chosen through experimentation to be optimal
+// Thread count was chosen through experimentation to be optimal on ADA
 #define NUM_THREADS 125
 pthread_t pthreads[NUM_THREADS];
 pthread_attr_t attr;
@@ -113,11 +113,6 @@ void *find_orb(void *arg)
                 {   
                     current_distance = distance;
                 
-                    // This is a tactic for making my program run faster.  If something goes
-                    // wrong, uncomment the two lines below and delete the two below that. 
-                    //range_x = distance;
-                    //range_y = distance;                    
-
                     // This is an abstraction of RAND_MAX/1 which will result in the production
                     // of a random number between 0.0 and 1.0
                     range_x = RAND_MAX;
@@ -154,8 +149,6 @@ void *find_orb(void *arg)
                     orb_y = orby1;   
 
                     current_distance = 0.0;
-
-                    printf("Flag1\n");
                 }
                 else
                 {
@@ -170,8 +163,6 @@ void *find_orb(void *arg)
                         orb_y = orby2;
                         
                         current_distance = 0.0;
-                        
-                        printf("Flag2\n");
                     }
                     // If we get here, we need to start over!
                     else
@@ -207,8 +198,6 @@ void *find_orb(void *arg)
 }
 
 
-// -------------------------------------------------------------------------
-// Main program to find orb 
 int main(int argc, char *argv[]) {
 
     if (argc != 3) {

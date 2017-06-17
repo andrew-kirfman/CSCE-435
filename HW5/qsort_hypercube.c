@@ -340,12 +340,6 @@ int main(int argc, char *argv[])
 	    list_size = list_size_gt+nbr_list_size;
 	}
 
-    MPI_Barrier(sub_hypercube_comm);
-    if(my_id == 0)
-    {
-        printf("Got through one dimension\n");
-    }
-
 	// Deallocate processor group, processor communicator, 
 	// sub_hypercube_processors array; these variables will be 
 	// reused in the next iteration of this for loop for a hypercube of 

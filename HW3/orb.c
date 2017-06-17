@@ -74,6 +74,11 @@ void *find_orb(void *arg)
 
     for(;;)
     {
+        if(current_distance < 0.000001)
+        {
+             pthread_exit(NULL);
+        }
+
         x_pos = (double)rand_r(&seed)/(double)(range_x);
         y_pos = (double)rand_r(&seed)/(double)(range_y);
 
@@ -187,11 +192,6 @@ void *find_orb(void *arg)
             }
 
             pthread_mutex_unlock(&range_lock);
-        }
-
-        if(current_distance < 0.000001)
-        {
-             pthread_exit(NULL);
         }
     }
 

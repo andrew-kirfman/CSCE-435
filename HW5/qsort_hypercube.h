@@ -5,6 +5,7 @@
 //
 #include "mpi.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 #ifndef VERBOSE
 #define VERBOSE 0                       // Use VERBOSE to control output 

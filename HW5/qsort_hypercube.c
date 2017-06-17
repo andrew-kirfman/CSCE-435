@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "mpi.h"
 #include "qsort_hypercube.h"
+#include <stdio.h>
 
 #define MAX_LIST_SIZE_PER_PROC	268435456
 
@@ -248,15 +249,12 @@ int main(int argc, char *argv[])
 	// MPI_Allreduce can be used with the MPI Communicator sub_hypercube_comm to 
 	// compute the sum of local_median values on processes of this hypercube
 	
-    MPI_Allreduce(&list_median, &pivot, 1, MPI_INT, MPI_SUM, &sub_hypercube_comm);
+    /* --------------------------------------------------------------------- */
+    /* Step 1: Compute the Pivot                                             */
+    /* --------------------------------------------------------------------- */
 
-	// ***** Add MPI call here *****
-
+    MPI_Allreduce(&local_median, &pivot, 1, MPI_INT, MPI_SUM, sub_hypercube_comm);
 	pivot = pivot/sub_hypercube_size;
-
-    printf("Pivot: %d", pivot);
-
-    return 0;
 
 	// Search for smallest element in list which is larger than pivot
 	// Upon return:
@@ -272,21 +270,28 @@ int main(int argc, char *argv[])
 
 	if (nbr_k > my_id) {
 	    // MPI-2: Send number of elements greater than pivot
-	    
+        nbr_k = nbr_k % sub_hypercube_size;
+
+        // This call is just telling the neighbor how many elements we're sending!!    
+        MPI_Send(&list_size_gt, 1, MPI_INT, nbr_k, 0, sub_hypercube_comm);	 
+
 	    // ***** Add MPI call here *****
 
 	    // MPI-3: Receive number of elements less than or equal to pivot
-	    
+        MPI_Recv(&nbr_list_size, 1, MPI_INT, nbr_k, 0, sub_hypercube_comm, MPI_STATUS_IGNORE);
+
 	    // ***** Add MPI call here *****
 
 	    // Allocate storage for neighbor's list
 	    nbr_list = (int *) calloc(nbr_list_size, sizeof(int));
 
 	    // MPI-4: Send list[idx ... list_size-1] to neighbor
+        MPI_Send(&list[idx], list_size_gt, MPI_INT, nbr_k, 0, sub_hypercube_comm);
 
 	    // ***** Add MPI call here *****
 
 	    // MPI-5: Receive neighbor's list of elements that are less than or equal to pivot
+        MPI_Recv(nbr_list, nbr_list_size, MPI_INT, nbr_k, 0, sub_hypercube_comm, MPI_STATUS_IGNORE);
 
 	    // ***** Add MPI call here *****
 
@@ -299,22 +304,30 @@ int main(int argc, char *argv[])
 	    list_size = list_size_leq+nbr_list_size;
 
 	} else {
+        nbr_k = nbr_k % sub_hypercube_size;
+
 	    // MPI-6: Receive number of elements greater than pivot
+        MPI_Recv(&nbr_list_size, 1, MPI_INT, nbr_k, 0, sub_hypercube_comm, MPI_STATUS_IGNORE);
 
 	    // ***** Add MPI call here *****
 
 	    // MPI-7: Send number of elements less than or equal to pivot
+        MPI_Send(&list_size_leq, 1, MPI_INT, nbr_k, 0, sub_hypercube_comm);
+
 
 	    // ***** Add MPI call here *****
 
 	    // Allocate storage for neighbor's list
 	    nbr_list = (int *) calloc(nbr_list_size, sizeof(int));
 
+
 	    // MPI-8: Receive neighbor's list of elements that are less than or equal to pivot
+        MPI_Recv(nbr_list, nbr_list_size, MPI_INT, nbr_k, 0, sub_hypercube_comm, MPI_STATUS_IGNORE);
 
 	    // ***** Add MPI call here *****
 
 	    // MPI-9: Send list[0 ... idx-1] to neighbor
+        MPI_Send(list, list_size_leq, MPI_INT, nbr_k, 0, sub_hypercube_comm);
 
 	    // ***** Add MPI call here *****
 
@@ -326,6 +339,7 @@ int main(int argc, char *argv[])
 	    list = new_list; 
 	    list_size = list_size_gt+nbr_list_size;
 	}
+
 	// Deallocate processor group, processor communicator, 
 	// sub_hypercube_processors array; these variables will be 
 	// reused in the next iteration of this for loop for a hypercube of 

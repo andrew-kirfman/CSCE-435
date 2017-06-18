@@ -80,13 +80,17 @@ void check_list(int *list, int list_size, int my_id, int num_procs)
     
     if (list_size > 0) 
     {
-	    if (list[0] > min_nbr) local_error = 1; 
+	    if (list[0] > min_nbr) { local_error = 1; printf("DDDDDDDDD, %d, %d\n\n\n", list[0], min_nbr);}
 	    for (j = 1; j < list_size; j++) 
         {
 	        if (list[j] > list[j-1]) local_error = 1;
 	    }
 	    my_min = list[list_size-1];
         my_max = list[0];
+    }
+    else
+    {
+        my_min = INT_MAX;
     }
 
     if (VERBOSE > 1) 

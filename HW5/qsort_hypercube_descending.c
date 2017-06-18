@@ -329,7 +329,6 @@ int main(int argc, char *argv[])
 
     }
 
-
 	// Deallocate processor group, processor communicator, 
 	// sub_hypercube_processors array; these variables will be 
 	// reused in the next iteration of this for loop for a hypercube of 
@@ -337,10 +336,6 @@ int main(int argc, char *argv[])
 	MPI_Group_free(&sub_hypercube_group);
 	MPI_Comm_free(&sub_hypercube_comm);
 	free(sub_hypercube_processors);
-    }
-
-    if (1) {
-	print_list(list, list_size, my_id, num_procs);
     }
 
 

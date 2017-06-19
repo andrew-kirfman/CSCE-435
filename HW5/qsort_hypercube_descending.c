@@ -317,8 +317,6 @@ int main(int argc, char *argv[])
 	    // MPI-9: Send list[0 ... idx-1] to neighbor
         MPI_Send(list, list_size_gt, MPI_INT, nbr_k, 0, sub_hypercube_comm);
 
-	    // ***** Add MPI call here *****
-
 	    // Merge local list of elements greater than pivot with neighbor's list
 	    new_list = merged_list(&list[idx], list_size_leq, nbr_list, nbr_list_size); 
 

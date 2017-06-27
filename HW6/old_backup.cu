@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <limits>
+#include <float.h>
 
 #define MAX_POINTS 1048576
 
@@ -17,14 +19,67 @@
 // Output: 
 //	D: D[0] = minimum distance
 //
-__global__ void minimum_distance(float * X, float * Y, volatile float * D, int n) {
 
-    // ------------------------------------------------------------
-    //
-    // Kernel function code goes here
-    //
-    // ------------------------------------------------------------
-} 
+
+//__global__ void minimum_distance(float * X, float * Y, volatile float * D, int n) 
+//{
+//    printf("Flag!\n");
+
+//    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+
+//    if(idx < n)
+//    {
+
+        //printf("Things: (%d, %d, %d)\n", idx, blockIdx.x, threadIdx.x);
+//    }
+//}
+
+
+
+// Working minimum_distance function
+ 
+__global__ void minimum_distance(float * X, float * Y, volatile float * D, int n) 
+{
+/*
+    unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
+
+    D[threadIdx.x] = FLT_MAX;
+    float min_distance_i;
+    float dx, dy;
+    int i;
+
+    for(i = 0; i<n; i++)
+    {
+        dx = X[i] - X[idx];
+        dy = Y[i] - Y[idx]; 
+                        
+        min_distance_i = sqrt(dx*dx + dy*dy);
+
+        if(min_distance_i < D[idx] && min_distance_i != 0)
+        {
+            D[idx] = min_distance_i;
+        }
+    } 
+
+
+    // At this point, each thread has calculated the minimum distance of each thread
+    __syncthreads();
+
+    for(i = 1; i<blockDim.x; i *= 2)
+    {
+        if(threadIdx.x % (2 * i) == 0 && threadIdx.x + i < n)
+        {
+            if(D[threadIdx.x] > D[threadIdx.x + i])
+            {
+                D[threadIdx.x] = D[threadIdx.x + i];  
+            }
+
+             __syncthreads();
+        } 
+    } */
+}
+
+
 // ---------------------------------------------------------------------------- 
 // Host function to compute minimum distance between points
 // Input:
@@ -148,8 +203,13 @@ int main(int argc, char* argv[]) {
     hVx = (float *) malloc(size); 
     hVy = (float *) malloc(size);
 
+    // Custom variables to create blocks
+    int block_size = 32;
+    int num_blocks = num_points/block_size + 1;
+
     // Initialize points
-    srand48(seed);
+    srand48(time(0));
+    //srand48(seed);                                // UNCOMMENT THIS UNCOMMENT THIS UNCOMMENT THIS!!!
     sqrtn = (float) sqrt(num_points); 
     for (i = 0; i < num_points; i++) {
 	hVx[i] = sqrtn * (float)drand48();
@@ -174,11 +234,7 @@ int main(int argc, char* argv[]) {
     // Invoke kernel
     cudaEventRecord( start, 0 ); 
 
-    // ------------------------------------------------------------
-    //
-    // Invoke kernel function(s) here
-    //
-    // ------------------------------------------------------------
+    minimum_distance<<<1, 4>>>(dVx, dVy, dmin_dist, num_points);
 
     cudaEventRecord(stop, 0);
     cudaEventSynchronize(stop);

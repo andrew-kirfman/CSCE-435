@@ -22,38 +22,38 @@
 
 // Working minimum_distance function
  
-__global__ void minimum_distance(float * X, float * Y, volatile float * D, int n) 
+__global__ void minimum_distance(double * X, double * Y, volatile double * D, int n) 
 {
     unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
 
     if(idx < n)
     {
-        D[idx] = FLT_MAX;
-        float min_distance_i;
-        float dx, dy;
+
+        double min_distance = FLT_MAX;
+        double min_distance_i;
+        
+        double dx, dy;
         int i;
 
-        for(i = 0; i<n; i++)
+        for(i = idx + 1; i<n; i++)
         {
-            if(i != idx)
-            {
-
-                dx = X[i] - X[idx];
-                dy = Y[i] - Y[idx]; 
+            dx = X[idx] - X[i];
+            dy = Y[idx] - Y[i]; 
                         
-                min_distance_i = sqrtf(dx*dx + dy*dy);
+            min_distance_i = sqrtf(dx*dx + dy*dy);
 
-                if(min_distance_i < D[idx])
-                {   
-                    D[idx] = min_distance_i;
-                }
+            if(min_distance_i < min_distance)
+            {   
+                min_distance = min_distance_i;
             }
         } 
+        
+        D[idx] = min_distance;
 
         // At this point, each thread has calculated the minimum distance of each thread
         __syncthreads();
 
-        if(idx == 0)
+        /*if(idx == 0)
         {
             printf("Things: %d", n);
 
@@ -61,26 +61,26 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
             {
                 if(D[0] > D[i] && D[i] != 0.00)
                 {
-                    printf("\nNew Minimum: %f\n", D[i]);
+                    printf("\nNew Minimum: (%d, %f)\n", i, D[i]);
 
                     D[0] = D[i];
                 }
             }
-        }
+        } */
 
     
-        //for(i = 1; i<n; i *= 2)
-        //{
-        //    if(idx % (2 * i) == 0 && idx + i < n)
-        //    {
-        //        if(D[idx] > D[idx + i])
-        //        {
-        //            D[idx] = D[idx + i];  
-        //        }
+        for(i = 1; i<n; i *= 2)
+        {
+            if(idx % (2 * i) == 0 && idx + i < n)
+            {
+                if(D[idx] > D[idx + i])
+                {
+                    D[idx] = D[idx + i];  
+                }
 
-        //        __syncthreads();
-        //    } 
-        //}
+                __syncthreads();
+            } 
+        }
     }
 }
 
@@ -94,8 +94,8 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
 // Output: 
 //	D: minimum distance
 //
-float minimum_distance_host(float * X, float * Y, int n) {
-    float dx, dy, Dij, min_distance, min_distance_i;
+double minimum_distance_host(double * X, double * Y, int n) {
+    double dx, dy, Dij, min_distance, min_distance_i;
     int i, j;
     dx = X[1]-X[0];
     dy = Y[1]-Y[0];
@@ -146,14 +146,14 @@ void print_device_properties() {
 int main(int argc, char* argv[]) {
 
     // Host Data
-    float * hVx;		// host x-coordinate array
-    float * hVy;		// host y-coordinate array
-    float hmin_dist;		// minimum value on host
+    double * hVx;		// host x-coordinate array
+    double * hVy;		// host y-coordinate array
+    double * hmin_dist;		// minimum value on host
 
     // Device Data
-    float * dVx;		// device x-coordinate array
-    float * dVy;		// device x-coordinate array
-    float * dmin_dist;		// minimum value on device
+    double * dVx;		// device x-coordinate array
+    double * dVy;		// device x-coordinate array
+    double * dmin_dist;		// minimum value on device
 
     // Device parameters
     int MAX_BLOCK_SIZE;		// Maximum number of threads allowed on the device
@@ -167,7 +167,7 @@ int main(int argc, char* argv[]) {
 
     // Other variables
     int i, size, num_points; 
-    float min_distance, sqrtn;
+    double min_distance, sqrtn;
     int seed = 0;
 
     // Print device properties
@@ -204,9 +204,10 @@ int main(int argc, char* argv[]) {
     } 
 
     // Allocate host coordinate arrays 
-    size = num_points * sizeof(float); 
-    hVx = (float *) malloc(size); 
-    hVy = (float *) malloc(size);
+    size = num_points * sizeof(double); 
+    hVx = (double *) malloc(size); 
+    hVy = (double *) malloc(size);
+    hmin_dist = (double *) malloc(size);
 
     // Custom variables to create blocks
     int block_size = 32;
@@ -215,10 +216,10 @@ int main(int argc, char* argv[]) {
     // Initialize points
     srand48(time(0));
     //srand48(seed);                                // UNCOMMENT THIS UNCOMMENT THIS UNCOMMENT THIS!!!
-    sqrtn = (float) sqrt(num_points); 
+    sqrtn = (double) sqrt(num_points); 
     for (i = 0; i < num_points; i++) {
-	hVx[i] = sqrtn * (float)drand48();
-	hVy[i] = sqrtn * (float)drand48();
+	hVx[i] = sqrtn * (double)drand48();
+	hVy[i] = sqrtn * (double)drand48();
     }
 
     // Allocate device coordinate arrays
@@ -248,7 +249,43 @@ int main(int argc, char* argv[]) {
     // Copy result from device memory to host memory 
     cudaEventRecord( start, 0 ); 
 
-    cudaMemcpy(&hmin_dist, dmin_dist, sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(hmin_dist, dmin_dist, num_points * sizeof(double), cudaMemcpyDeviceToHost);
+
+    // Serial algorithm:
+    float minDist = FLT_MAX;
+    int x, z;
+    float dx, dy, temp_distance;
+    for(x = 1; x < num_points - 1; x++)
+    {
+        for(z = x + 1; z<num_points; z++)
+        {
+            dx = hVx[z] - hVx[x];
+            dy = hVy[z] - hVy[x];
+
+            temp_distance = sqrtf(dx * dx + dy * dy);   
+
+            if(temp_distance < minDist)
+            {
+                minDist = temp_distance;
+            }
+        }
+    }
+
+    
+
+
+    double minimum = hmin_dist[0];
+    int w;
+
+    for(w = 1; w<num_points; w++)
+    {
+        if(minimum > hmin_dist[w])
+        {
+            minimum = hmin_dist[0];
+        }
+    }
+
+    printf("\n\nFinal Results: %f, Serial = %f\n\n", minimum, minDist);
 
     cudaEventRecord(stop, 0);
     cudaEventSynchronize(stop);
@@ -269,9 +306,9 @@ int main(int argc, char* argv[]) {
     printf("GPU Device-to-host  = %f ms \n", time_array[2]);
     printf("GPU execution time  = %f ms \n", time_array[1]);
     printf("CPU execution time  = %f ms\n", time_array[3]);
-    printf("Min. distance (GPU) = %e\n", hmin_dist);
+    printf("Min. distance (GPU) = %e\n", hmin_dist[0]);
     printf("Min. distance (CPU) = %e\n", min_distance);
-    printf("Relative error      = %e\n", fabs(min_distance-hmin_dist)/min_distance);
+    printf("Relative error      = %e\n", fabs(min_distance-hmin_dist[0])/min_distance);
 
 
     // Free device memory 

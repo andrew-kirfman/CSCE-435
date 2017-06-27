@@ -1,0 +1,22 @@
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -o output.%J        # file name for the job's standard output
+#BSUB -n 20 -R "span[ptile=20]" -R "select[gpu256gb]"
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module purge
+module load intel/2016a CUDA         # load Intel software stack 
+
+./nbody.exe 2048
+
+
+#time mpirun -np 1 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 2 ./qsort_hypercube.exe 20280000 0
+#time mpirun -np 4 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 8 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 16 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 32 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 64 ./qsort_hypercube.exe 20480000 0
+

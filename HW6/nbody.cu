@@ -263,10 +263,9 @@ int main(int argc, char* argv[]) {
     // Custom variables to create blocks
     int num_blocks = num_points / (block_size) + ((num_points % (block_size)) != 0);
 
-    printf("Block Size: %d\n", block_size);
-    printf("NumBlocks: %d\n", num_blocks);
-    printf("Num Points: %d\n", num_points);
-
+    //
+    // Kernel function invocation
+    //
     minimum_distance<<<num_blocks, block_size>>>(dVx, dVy, dmin_dist, num_points);
 
     cudaEventRecord(stop, 0);
@@ -276,43 +275,7 @@ int main(int argc, char* argv[]) {
     // Copy result from device memory to host memory 
     cudaEventRecord( start, 0 ); 
 
-    cudaMemcpy(hmin_dist, dmin_dist, num_points * sizeof(float), cudaMemcpyDeviceToHost);
-
-    // Serial algorithm:
-    float minDist = FLT_MAX;
-    int x, z;
-    float dx, dy, temp_distance;
-    for(x = 1; x < num_points - 1; x++)
-    {
-        for(z = x + 1; z<num_points; z++)
-        {
-            dx = hVx[z] - hVx[x];
-            dy = hVy[z] - hVy[x];
-
-            temp_distance = sqrtf(dx * dx + dy * dy);   
-
-            if(temp_distance < minDist)
-            {
-                minDist = temp_distance;
-            }
-        }
-    }
-
-    
-
-
-    float minimum = hmin_dist[0];
-    int w;
-
-    for(w = 1; w<num_points; w++)
-    {
-        if(minimum > hmin_dist[w])
-        {
-            minimum = hmin_dist[0];
-        }
-    }
-
-    printf("\n\nFinal Results: %f, Serial = %f\n\n", minimum, minDist);
+    cudaMemcpy(hmin_dist, dmin_dist, sizeof(float), cudaMemcpyDeviceToHost);
 
     cudaEventRecord(stop, 0);
     cudaEventSynchronize(stop);

@@ -71,32 +71,46 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
         __syncthreads();
     
         // Compute the block local minimum
-        if(threadIdx.x == 0)
+        int largest_index = (n % block_size);
+
+        if(largest_index == 0)
         {
-            int largest_index = (n % block_size);
-
-            if(largest_index == 0)
+            largest_index = block_size;   
+        }
+        else
+        {
+            if(blockIdx.x != n/block_size)
             {
-                largest_index = block_size;   
+                largest_index = block_size;    
             }
-            else
+        }
+
+        minDist = FLT_MAX;
+        for(i = 1; i<largest_index; i *= 2)
+        {
+            if(threadIdx.x % (2 * i) == 0 && threadIdx.x + i < n)
             {
-                if(blockIdx.x != n/block_size)
+                if(block_local_minimums[threadIdx.x] > block_local_minimums[threadIdx.x + i])
                 {
-                    largest_index = block_size;    
+                    block_local_minimums[threadIdx.x] = block_local_minimums[threadIdx.x + i];  
                 }
-            }
 
-            minDist = FLT_MAX;
-            for(i = 0; i<largest_index - 1; i++)
+                __syncthreads();
+            } 
+        }
+
+
+
+            /* for(i = 0; i<largest_index - 1; i++)
             {
                 if(block_local_minimums[i] < minDist)
                 {
                     minDist = block_local_minimums[i];
                 }
-            }            
-
-            D[blockIdx.x] = minDist;
+            } */            
+        if(threadIdx.x == 0)
+        {
+            D[blockIdx.x] = block_local_minimums[0];
 
             int value = atomicInc(&finished_blocks, gridDim.x);
             isLastBlockDone = (value == (gridDim.x - 1));

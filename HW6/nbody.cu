@@ -69,7 +69,10 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
         __threadfence();
     
         __syncthreads();
-    
+
+        //if(threadIdx.x == 0)
+        //{    
+
         // Compute the block local minimum
         int largest_index = (n % block_size);
 
@@ -85,11 +88,28 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
             }
         }
 
+
         minDist = FLT_MAX;
-        for(i = 1; i<largest_index; i *= 2)
+        if(threadIdx.x == 0)
         {
-            if(threadIdx.x % (2 * i) == 0 && threadIdx.x + i < n)
+
+            for(i = 0; i<largest_index - 1; i++)
             {
+                if(block_local_minimums[i] < minDist)
+                {
+                    minDist = block_local_minimums[i];
+                }
+            } 
+        }
+
+        __syncthreads();
+
+        for(i = 1; i<largest_index; i *= 2) 
+        {
+            if(threadIdx.x % (2 * i) == 0 && (threadIdx.x + i) < largest_index - 1)
+            {
+                printf("Things: (%d, %d, %d, %f, %f)\n", largest_index, i, i + threadIdx.x, block_local_minimums[threadIdx.x], block_local_minimums[threadIdx.x + i]);
+
                 if(block_local_minimums[threadIdx.x] > block_local_minimums[threadIdx.x + i])
                 {
                     block_local_minimums[threadIdx.x] = block_local_minimums[threadIdx.x + i];  
@@ -100,17 +120,12 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
         }
 
 
-
-            /* for(i = 0; i<largest_index - 1; i++)
-            {
-                if(block_local_minimums[i] < minDist)
-                {
-                    minDist = block_local_minimums[i];
-                }
-            } */            
         if(threadIdx.x == 0)
         {
-            D[blockIdx.x] = block_local_minimums[0];
+
+            printf("Results: (linear = %f, logarithmic = %f)", minDist, block_local_minimums[0]);
+             
+            D[blockIdx.x] = minDist;
 
             int value = atomicInc(&finished_blocks, gridDim.x);
             isLastBlockDone = (value == (gridDim.x - 1));

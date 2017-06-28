@@ -1,0 +1,120 @@
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 16
+GPU Host-to-device  = 0.019840 ms 
+GPU Device-to-host  = 0.023840 ms 
+GPU execution time  = 0.072512 ms 
+CPU execution time  = 0.001228 ms
+Min. distance (GPU) = 4.233771e-01
+Min. distance (CPU) = 4.233771e-01
+Relative error      = 7.039191e-08
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 32
+GPU Host-to-device  = 0.018944 ms 
+GPU Device-to-host  = 0.020992 ms 
+GPU execution time  = 0.062048 ms 
+CPU execution time  = 0.001653 ms
+Min. distance (GPU) = 2.055585e-01
+Min. distance (CPU) = 2.055585e-01
+Relative error      = 0.000000e+00
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@gpu256-3017>
+Subject: Job 5893909: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login1> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*gpu256-3017>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/git/CSCE-435/HW6> was used as the working directory.
+Started at Wed Jun 28 11:45:56 2017
+Results reported on Wed Jun 28 11:46:04 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -o output.%J        # file name for the job's standard output
+#BSUB -n 20 -R "span[ptile=20]" -R "select[gpu256gb]"
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module purge
+module load intel/2016a CUDA         # load Intel software stack 
+
+./nbody.exe $((2 << 3))
+./nbody.exe $((2 << 4))
+#./nbody.exe $((2 << 5))
+#./nbody.exe $((2 << 6))
+#./nbody.exe $((2 << 7))
+#./nbody.exe $((2 << 8))
+#./nbody.exe $((2 << 9))
+#./nbody.exe $((2 << 10))
+#./nbody.exe $((2 << 11))
+#./nbody.exe $((2 << 12))
+#./nbody.exe $((2 << 13))
+#./nbody.exe $((2 << 14))
+#./nbody.exe $((2 << 15))
+
+
+#time mpirun -np 1 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 2 ./qsort_hypercube.exe 20280000 0
+#time mpirun -np 4 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 8 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 16 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 32 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 64 ./qsort_hypercube.exe 20480000 0
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3.16 sec.
+    Max Memory :                                 21 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               51179.00 MB
+    Max Processes :                              3
+    Max Threads :                                3
+
+The output (if any) is above this job summary.
+

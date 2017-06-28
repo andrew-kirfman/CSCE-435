@@ -9,7 +9,19 @@
 module purge
 module load intel/2016a CUDA         # load Intel software stack 
 
+./nbody.exe $((2 << 3))
+./nbody.exe $((2 << 4))
+./nbody.exe $((2 << 5))
+./nbody.exe $((2 << 6))
+./nbody.exe $((2 << 7))
+./nbody.exe $((2 << 8))
+./nbody.exe $((2 << 9))
 ./nbody.exe $((2 << 10))
+./nbody.exe $((2 << 11))
+./nbody.exe $((2 << 12))
+./nbody.exe $((2 << 13))
+./nbody.exe $((2 << 14))
+./nbody.exe $((2 << 15))
 
 
 #time mpirun -np 1 ./qsort_hypercube.exe 20480000 0

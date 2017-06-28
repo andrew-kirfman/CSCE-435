@@ -1,0 +1,82 @@
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 2048
+GPU Host-to-device  = 0.027136 ms 
+GPU Device-to-host  = 0.024032 ms 
+GPU execution time  = 1.608576 ms 
+CPU execution time  = 1.694298 ms
+Min. distance (GPU) = 8.863139e-03
+Min. distance (CPU) = 8.863138e-03
+Relative error      = 1.050782e-07
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@gpu256-3002>
+Subject: Job 5893374: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login1> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*gpu256-3002>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/git/CSCE-435/HW6> was used as the working directory.
+Started at Wed Jun 28 00:22:20 2017
+Results reported on Wed Jun 28 00:22:29 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -o output.%J        # file name for the job's standard output
+#BSUB -n 20 -R "span[ptile=20]" -R "select[gpu256gb]"
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module purge
+module load intel/2016a CUDA         # load Intel software stack 
+
+./nbody.exe $((2 << 10))
+
+
+#time mpirun -np 1 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 2 ./qsort_hypercube.exe 20280000 0
+#time mpirun -np 4 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 8 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 16 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 32 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 64 ./qsort_hypercube.exe 20480000 0
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3.26 sec.
+    Max Memory :                                 22 MB
+    Average Memory :                             10.00 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               51178.00 MB
+    Max Processes :                              4
+    Max Threads :                                5
+
+The output (if any) is above this job summary.
+

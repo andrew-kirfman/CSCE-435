@@ -1,0 +1,418 @@
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 16
+GPU Host-to-device  = 0.019200 ms 
+GPU Device-to-host  = 0.024192 ms 
+GPU execution time  = 0.077280 ms 
+CPU execution time  = 0.001239 ms
+Min. distance (GPU) = 4.233771e-01
+Min. distance (CPU) = 4.233771e-01
+Relative error      = 7.039191e-08
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 32
+GPU Host-to-device  = 0.018976 ms 
+GPU Device-to-host  = 0.022016 ms 
+GPU execution time  = 0.062496 ms 
+CPU execution time  = 0.001705 ms
+Min. distance (GPU) = 2.055585e-01
+Min. distance (CPU) = 2.055585e-01
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 64
+GPU Host-to-device  = 0.018976 ms 
+GPU Device-to-host  = 0.020512 ms 
+GPU execution time  = 0.088128 ms 
+CPU execution time  = 0.003675 ms
+Min. distance (GPU) = 4.616791e-02
+Min. distance (CPU) = 4.616791e-02
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 128
+GPU Host-to-device  = 0.029024 ms 
+GPU Device-to-host  = 0.020736 ms 
+GPU execution time  = 0.132704 ms 
+CPU execution time  = 0.009710 ms
+Min. distance (GPU) = 3.302235e-02
+Min. distance (CPU) = 3.302235e-02
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 256
+GPU Host-to-device  = 0.027456 ms 
+GPU Device-to-host  = 0.021504 ms 
+GPU execution time  = 0.224896 ms 
+CPU execution time  = 0.031227 ms
+Min. distance (GPU) = 4.670065e-02
+Min. distance (CPU) = 4.670065e-02
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 512
+GPU Host-to-device  = 0.030528 ms 
+GPU Device-to-host  = 0.022176 ms 
+GPU execution time  = 0.405024 ms 
+CPU execution time  = 0.113245 ms
+Min. distance (GPU) = 5.065696e-02
+Min. distance (CPU) = 5.065696e-02
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 1024
+GPU Host-to-device  = 0.037952 ms 
+GPU Device-to-host  = 0.023392 ms 
+GPU execution time  = 0.789536 ms 
+CPU execution time  = 0.436861 ms
+Min. distance (GPU) = 6.268120e-03
+Min. distance (CPU) = 6.268120e-03
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 2048
+GPU Host-to-device  = 0.037600 ms 
+GPU Device-to-host  = 0.023808 ms 
+GPU execution time  = 1.580032 ms 
+CPU execution time  = 1.729494 ms
+Min. distance (GPU) = 8.863139e-03
+Min. distance (CPU) = 8.863138e-03
+Relative error      = 1.050782e-07
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 4096
+GPU Host-to-device  = 0.049024 ms 
+GPU Device-to-host  = 0.022272 ms 
+GPU execution time  = 3.153792 ms 
+CPU execution time  = 6.709263 ms
+Min. distance (GPU) = 1.253624e-02
+Min. distance (CPU) = 1.253624e-02
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 8192
+GPU Host-to-device  = 0.075488 ms 
+GPU Device-to-host  = 0.021888 ms 
+GPU execution time  = 6.312320 ms 
+CPU execution time  = 26.765841 ms
+Min. distance (GPU) = 1.201180e-02
+Min. distance (CPU) = 1.201180e-02
+Relative error      = 7.753397e-08
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 16384
+GPU Host-to-device  = 0.124544 ms 
+GPU Device-to-host  = 0.023072 ms 
+GPU execution time  = 12.877216 ms 
+CPU execution time  = 106.740486 ms
+Min. distance (GPU) = 4.213715e-03
+Min. distance (CPU) = 4.213715e-03
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 32768
+GPU Host-to-device  = 0.156832 ms 
+GPU Device-to-host  = 0.022336 ms 
+GPU execution time  = 27.455296 ms 
+CPU execution time  = 427.333282 ms
+Min. distance (GPU) = 1.945993e-03
+Min. distance (CPU) = 1.945993e-03
+Relative error      = 0.000000e+00
+------------------------------------------------------------
+Number of GPU devices found = 2
+[Device: 0] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+[Device: 1] Compute Capability 3.5.
+ ... multiprocessor count  = 13
+ ... max threads per multiprocessor = 2048
+ ... max threads per block = 1024
+ ... max block dimension   = 1024, 1024, 64 (along x, y, z)
+ ... max grid size         = 2147483647, 65535, 65535 (along x, y, z)
+ ... warp size             = 32
+ ... clock rate            = 705 MHz
+------------------------------------------------------------
+Number of Points    = 65536
+GPU Host-to-device  = 0.281632 ms 
+GPU Device-to-host  = 0.023168 ms 
+GPU execution time  = 79.501053 ms 
+CPU execution time  = 1725.874512 ms
+Min. distance (GPU) = 1.979487e-03
+Min. distance (CPU) = 1.979487e-03
+Relative error      = 1.176217e-07
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@gpu256-3017>
+Subject: Job 5893921: <compute_pi> in cluster <Main_Compute> Done
+
+Job <compute_pi> was submitted from host <login1> by user <andrew.kirfman> in cluster <Main_Compute>.
+Job was executed on host(s) <20*gpu256-3017>, in queue <sn_short>, as user <andrew.kirfman> in cluster <Main_Compute>.
+</home/andrew.kirfman> was used as the home directory.
+</home/andrew.kirfman/git/CSCE-435/HW6> was used as the working directory.
+Started at Wed Jun 28 11:49:38 2017
+Results reported on Wed Jun 28 11:49:53 2017
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#BSUB -J compute_pi       # job name
+#BSUB -L /bin/bash        # job's execution environment
+#BSUB -W 0:10             # wall clock runtime limit 
+#BSUB -o output.%J        # file name for the job's standard output
+#BSUB -n 20 -R "span[ptile=20]" -R "select[gpu256gb]"
+##
+# <--- at this point the current working directory is the one you submitted the job from.
+#
+module purge
+module load intel/2016a CUDA         # load Intel software stack 
+
+./nbody.exe $((2 << 3))
+./nbody.exe $((2 << 4))
+./nbody.exe $((2 << 5))
+./nbody.exe $((2 << 6))
+./nbody.exe $((2 << 7))
+./nbody.exe $((2 << 8))
+./nbody.exe $((2 << 9))
+./nbody.exe $((2 << 10))
+./nbody.exe $((2 << 11))
+./nbody.exe $((2 << 12))
+./nbody.exe $((2 << 13))
+./nbody.exe $((2 << 14))
+./nbody.exe $((2 << 15))
+
+
+#time mpirun -np 1 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 2 ./qsort_hypercube.exe 20280000 0
+#time mpirun -np 4 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 8 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 16 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 32 ./qsort_hypercube.exe 20480000 0
+#time mpirun -np 64 ./qsort_hypercube.exe 20480000 0
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   8.75 sec.
+    Max Memory :                                 22 MB
+    Average Memory :                             11.50 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               51178.00 MB
+    Max Processes :                              7
+    Max Threads :                                8
+
+The output (if any) is above this job summary.
+

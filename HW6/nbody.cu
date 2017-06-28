@@ -24,54 +24,38 @@
 
 
 // Working minimum_distance function
-__device__ unsigned int count = 0;
 __device__ unsigned int finished_blocks = 0; 
 
 __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n) 
 {
     unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
 
-    int i;
+    int i, z;
+    float dx, dy, temp_distance;    
     float minDist = FLT_MAX; 
     
-    bool isLastBlockDone = false; 
-  
+    bool isLastBlockDone;
+    
     __shared__ float block_local_minimums[block_size];
-
 
     if(idx < n - 1)
     {
-        atomicInc(&count, n);
-        int x = idx; 
-        int z;
-        float dx, dy, temp_distance;
-        
-        for(z = x + 1; z<n; z++)
+        for(z = idx + 1; z<n; z++)
         {   
-            dx = X[z] - X[x];
-            dy = Y[z] - Y[x];
+            dx = X[z] - X[idx];
+            dy = Y[z] - Y[idx];
 
             temp_distance = sqrtf(dx * dx + dy * dy);   
 
             if(temp_distance < minDist)
             {
-                if(blockIdx.x == 1)
-                {
-                    //printf("New Block 1 Minimum: (%d, %d, %f)", x, z, temp_distance);
-                }
-
                 minDist = temp_distance;
             }
         }
 
         block_local_minimums[threadIdx.x] = minDist;
-
-        __threadfence();
     
         __syncthreads();
-
-        //if(threadIdx.x == 0)
-        //{    
 
         // Compute the block local minimum
         int largest_index = (n % block_size);
@@ -88,28 +72,10 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
             }
         }
 
-
-        minDist = FLT_MAX;
-        if(threadIdx.x == 0)
-        {
-
-            for(i = 0; i<largest_index - 1; i++)
-            {
-                if(block_local_minimums[i] < minDist)
-                {
-                    minDist = block_local_minimums[i];
-                }
-            } 
-        }
-
-        __syncthreads();
-
         for(i = 1; i<largest_index; i *= 2) 
         {
             if(threadIdx.x % (2 * i) == 0 && (threadIdx.x + i) < largest_index - 1)
             {
-                printf("Things: (%d, %d, %d, %f, %f)\n", largest_index, i, i + threadIdx.x, block_local_minimums[threadIdx.x], block_local_minimums[threadIdx.x + i]);
-
                 if(block_local_minimums[threadIdx.x] > block_local_minimums[threadIdx.x + i])
                 {
                     block_local_minimums[threadIdx.x] = block_local_minimums[threadIdx.x + i];  
@@ -119,13 +85,9 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
             } 
         }
 
-
         if(threadIdx.x == 0)
         {
-
-            printf("Results: (linear = %f, logarithmic = %f)", minDist, block_local_minimums[0]);
-             
-            D[blockIdx.x] = minDist;
+            D[blockIdx.x] = block_local_minimums[0];
 
             int value = atomicInc(&finished_blocks, gridDim.x);
             isLastBlockDone = (value == (gridDim.x - 1));
@@ -145,71 +107,6 @@ __global__ void minimum_distance(float * X, float * Y, volatile float * D, int n
             }
         }            
     }    
-
-
-
-
-    /*
-
-    if(idx < n - 1)
-    {
-
-        float min_distance = FLT_MAX;
-        float min_distance_i;
-        
-        float dx, dy;
-        int i;
-
-        for(i = idx + 1; i<n; i++)
-        {
-            dx = X[idx] - X[i];
-            dy = Y[idx] - Y[i]; 
-                        
-            min_distance_i = sqrt(dx*dx + dy*dy);
-
-            if(min_distance_i == 0.00)
-            {
-                printf("(%f, %f) (%f, %f)", X[idx], Y[idx], X[i], Y[i]);
-            }
-
-
-            if(min_distance_i < min_distance)
-            {   
-                min_distance = min_distance_i;
-            }
-        } 
-        
-        D[idx] = min_distance;
- */
-
-/*         __threadfence();
-        __syncthreads();
-
-        if(idx == 0)
-        {
-            for(i = 0; i<n; i++)
-            {
-                if(D[0] > D[i])
-                {
-                    D[0] = D[i];
-                }
-            }
-
-            printf("THREAD COUNT: %d\n", count);
-        } 
-
-/*        for(i = 1; i<n; i *= 2)
-        {
-            if(idx % (2 * i) == 0 && idx + i < n)
-            {
-                if(D[idx] > D[idx + i])
-                {
-                    D[idx] = D[idx + i];  
-                }
-
-                __syncthreads();
-            } 
-        } */
 }
 
 
@@ -338,8 +235,7 @@ int main(int argc, char* argv[]) {
     hmin_dist = (float *) malloc(size);
 
     // Initialize points
-    srand48(time(0));
-    //srand48(seed);                                // UNCOMMENT THIS UNCOMMENT THIS UNCOMMENT THIS!!!
+    srand48(seed);                                // UNCOMMENT THIS UNCOMMENT THIS UNCOMMENT THIS!!!
     sqrtn = (float) sqrt(num_points); 
     for (i = 0; i < num_points; i++) {
 	hVx[i] = sqrtn * (float)drand48();
